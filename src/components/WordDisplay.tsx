@@ -86,22 +86,22 @@ const WordDisplay: React.FC<WordDisplayProps> = ({ text }) => {
         }
     };
 
-const currentWord = words[currentWordIndex] || '';
+    const currentWord = words[currentWordIndex] || '';
 
-let middleIndex = 0;
-if (currentWord.length > 0) {
-    middleIndex = Math.max(0, Math.floor((currentWord.length - 1) / 2));
-    
-    if (currentWord.length > 3) {
-        const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
-        for (let i = Math.max(0, middleIndex - 1); i <= Math.min(currentWord.length - 1, middleIndex + 1); i++) {
-            if (vowels.includes(currentWord[i])) {
-                middleIndex = i;
-                break;
+    let middleIndex = 0;
+    if (currentWord.length > 0) {
+        middleIndex = Math.max(0, Math.floor((currentWord.length - 1) / 2));
+        
+        if (currentWord.length > 3) {
+            const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+            for (let i = Math.max(0, middleIndex - 1); i <= Math.min(currentWord.length - 1, middleIndex + 1); i++) {
+                if (vowels.includes(currentWord[i])) {
+                    middleIndex = i;
+                    break;
+                }
             }
         }
     }
-}
 
     const part1 = currentWord.substring(0, middleIndex);
     const middle = currentWord.substring(middleIndex, middleIndex + 1);
@@ -163,8 +163,6 @@ if (currentWord.length > 0) {
                     </button>
                 </div>
             </div>
-
-            
         </div>
     );
 };
