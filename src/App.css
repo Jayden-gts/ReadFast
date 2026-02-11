@@ -22,7 +22,7 @@ html, body, #root {
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1900px;
     width: 100%;
     background: rgba(255, 255, 255, 0.653);
     border-radius: 16px;
