@@ -67,8 +67,14 @@ const WordDisplay: React.FC<WordDisplayProps> = ({ text }) => {
     };
 
     const handleWpmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value);
-        if (value > 0) {
+        const inputValue = e.target.value;
+        if (inputValue === '') {
+            setWordsPerMinute(0); 
+            return;
+        }
+
+        const value = parseInt(inputValue);
+        if (!isNaN(value)) {
             setWordsPerMinute(value);
         }
     };
@@ -80,12 +86,41 @@ const WordDisplay: React.FC<WordDisplayProps> = ({ text }) => {
         }
     };
 
-    const currentWord = words[currentWordIndex] || '';
-    const progress = words.length > 0 ? (currentWordIndex / words.length) * 100 : 0;
-    const currentWpm = currentDelay > 0 ? Math.round(60000 / currentDelay) : wordsPerMinute;
+const currentWord = words[currentWordIndex] || '';
 
+let middleIndex = 0;
+if (currentWord.length > 0) {
+    middleIndex = Math.max(0, Math.floor((currentWord.length - 1) / 2));
+    
+    if (currentWord.length > 3) {
+        const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+        for (let i = Math.max(0, middleIndex - 1); i <= Math.min(currentWord.length - 1, middleIndex + 1); i++) {
+            if (vowels.includes(currentWord[i])) {
+                middleIndex = i;
+                break;
+            }
+        }
+    }
+}
+
+    const part1 = currentWord.substring(0, middleIndex);
+    const middle = currentWord.substring(middleIndex, middleIndex + 1);
+    const part2 = currentWord.substring(middleIndex + 1);
+    
     return (
         <div className="word-display-container">
+
+            <div className="word-viewport">
+                <div className="center-marker"></div>
+                <div className="word-container">
+                    <div className="word-wrapper">
+                        <span className="word-part left">{part1}</span>
+                        <span className="word-part middle">{middle}</span>
+                        <span className="word-part right">{part2}</span>
+                    </div>
+                </div>
+            </div>
+
             <div className="controls">
                 <div className="control-group">
                     <label htmlFor="wpm">Words Per Minute:</label>
@@ -129,28 +164,7 @@ const WordDisplay: React.FC<WordDisplayProps> = ({ text }) => {
                 </div>
             </div>
 
-            <div className="word-viewport">
-                <div className="current-word">{currentWord}</div>
-            </div>
-
-            <div className="stats">
-                <div className="stat">
-                    <span className="stat-label">Progress:</span>
-                    <span className="stat-value">{currentWordIndex} / {words.length} words ({progress.toFixed(1)}%)</span>
-                </div>
-                <div className="stat">
-                    <span className="stat-label">Current Speed:</span>
-                    <span className="stat-value">{currentWpm} WPM</span>
-                </div>
-                <div className="stat">
-                    <span className="stat-label">Target Speed:</span>
-                    <span className="stat-value">{wordsPerMinute} WPM</span>
-                </div>
-            </div>
-
-            <div className="progress-bar">
-                <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-            </div>
+            
         </div>
     );
 };

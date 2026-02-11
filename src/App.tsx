@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="app">
       <div className='container'>
-        <h1>How Fast Can You Read?</h1>
+        <h1>Train Your Reading Speed</h1>
         <FileUploader onFileProcessed={handleFileProcessed} onFileRemoved={handleFileRemoved} />
         {fileText && (
                     <>
